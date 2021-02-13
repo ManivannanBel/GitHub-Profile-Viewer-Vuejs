@@ -5,7 +5,8 @@ const state = {
   resultCount: 0,
   pageNo: 1,
   currentSearchQuery: "",
-  perPage: 10
+  perPage: 10,
+  apiLoading: false
 };
 
 const getters = {
@@ -13,11 +14,13 @@ const getters = {
   resultCount: state => state.resultCount,
   pageNo: state => state.pageNo,
   currentSearchQuery: state => state.currentSearchQuery,
-  perPage: state => state.perPage
+  perPage: state => state.perPage,
+  apiLoading: state => state.apiLoading
 };
 
 const actions = {
   searchUsers({ commit }, searchQuery) {
+    commit("setApiLoading", true);
     axios
       .get("https://api.github.com/search/users", {
         params: { q: searchQuery, per_page: state.perPage, page: 1 }
@@ -25,14 +28,17 @@ const actions = {
       .then(response => {
         commit("setSearchResults", response.data.items);
         commit("setResultCount", response.data.total_count);
-        commit("setPageNo", state.pageNo + 1);
+        commit("setPageNo", ++state.pageNo);
         commit("setCurrentSearchQuery", searchQuery);
+        commit("setApiLoading", false);
       })
       .catch(err => {
         console.log(err);
+        commit("setApiLoading", false);
       });
   },
   searchMoreUsers({ commit }) {
+    commit("setApiLoading", true);
     axios
       .get("https://api.github.com/search/users", {
         params: {
@@ -42,12 +48,14 @@ const actions = {
         }
       })
       .then(response => {
+        commit("setApiLoading", false);
         commit("updateSearchResults", response.data.items);
-        commit("setPageNo", state.pageNo + 1);
+        commit("setPageNo", ++state.pageNo);
         commit("setResultCount", response.data.total_count);
       })
       .catch(err => {
         console.log(err);
+        commit("setApiLoading", false);
       });
   }
 };
@@ -60,7 +68,8 @@ const mutations = {
   setPageNo: (state, pageNo) => (state.pageNo = pageNo),
   setResultCount: (state, resultCount) => (state.resultCount = resultCount),
   setCurrentSearchQuery: (state, currentSearchQuery) =>
-    (state.currentSearchQuery = currentSearchQuery)
+    (state.currentSearchQuery = currentSearchQuery),
+  setApiLoading: (state, apiLoading) => (state.apiLoading = apiLoading)
 };
 
 export default {
