@@ -20,25 +20,35 @@ const getters = {
 
 const actions = {
   searchUsers({ commit }, searchQuery) {
+    //Set apiLoading to true, to block multiple request calls onscroll
     commit("setApiLoading", true);
+    //Make api request
     axios
       .get("https://api.github.com/search/users", {
         params: { q: searchQuery, per_page: state.perPage, page: 1 }
       })
       .then(response => {
+        //Update result list
         commit("setSearchResults", response.data.items);
+        //Store the item count
         commit("setResultCount", response.data.total_count);
+        //Update page number
         commit("setPageNo", ++state.pageNo);
+        //Set the search query and use it for lazyloading searchquery
         commit("setCurrentSearchQuery", searchQuery);
+        //Release the api call lock
         commit("setApiLoading", false);
       })
       .catch(err => {
         console.log(err);
+        //Release the api call lock
         commit("setApiLoading", false);
       });
   },
   searchMoreUsers({ commit }) {
+    //Set apiLoading to true, to block multiple request calls onscroll
     commit("setApiLoading", true);
+    //Make api request
     axios
       .get("https://api.github.com/search/users", {
         params: {
@@ -48,13 +58,18 @@ const actions = {
         }
       })
       .then(response => {
+        //Release the api call lock
         commit("setApiLoading", false);
+        //Append result list
         commit("updateSearchResults", response.data.items);
+        //Update page number
         commit("setPageNo", ++state.pageNo);
-        commit("setResultCount", response.data.total_count);
+
+        // commit("setResultCount", response.data.total_count);
       })
       .catch(err => {
         console.log(err);
+        //Release the api call lock
         commit("setApiLoading", false);
       });
   }

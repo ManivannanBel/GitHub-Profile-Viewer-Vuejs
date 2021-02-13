@@ -44,6 +44,7 @@ export default {
     };
   },
   created() {
+    //Do request call for user data once the component is created
     axios
       .get(`https://api.github.com/users/${this.currentRoute}`, {
         params: {

@@ -22,11 +22,13 @@ export default {
   components: { GitHubProfileListItem },
   computed: mapGetters(["apiLoading"]),
   mounted() {
+    //Register the scroll event
     this.$nextTick(function() {
       window.addEventListener("scroll", this.onScroll);
     });
   },
   beforeDestroy() {
+    //Destroy the scroll event
     window.removeEventListener("scroll", this.onScroll);
   },
   methods: {
@@ -37,11 +39,18 @@ export default {
       let loadData =
         document.documentElement.scrollTop + window.innerHeight ===
         document.documentElement.offsetHeight;
-      //   console.log(loadData);
 
-      if (loadData && !this.apiLoading) {
+      //Make api request only if all the below conditions are statisfied
+      //->we reach the list end
+      //->no pending response from api
+      //->number of users loaded is less than the total users list availble for that query
+      if (
+        loadData &&
+        !this.apiLoading &&
+        pageNo - 1 > 0 &&
+        (pageNo - 1) * perPage <= resultCount
+      ) {
         this.$emit("load-more");
-        console.log("lazy load");
       }
     }
   }
