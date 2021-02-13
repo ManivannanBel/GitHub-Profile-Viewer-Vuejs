@@ -14,8 +14,6 @@ export default {
 header {
   padding: 10px;
 }
-.title {
-}
 
 @media screen and (max-width: 500px) {
   .title {
