@@ -36,7 +36,7 @@ h5 {
   grid-template-columns: 1fr 1fr;
   grid-gap: 5px;
 }
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 650px) {
   .gridWrapper {
     grid-template-columns: 1fr;
   }
