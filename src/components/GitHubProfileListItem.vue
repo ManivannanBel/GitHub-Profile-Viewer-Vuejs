@@ -1,6 +1,6 @@
 <template>
   <div>
-    <router-link class="link" v-bind:to="profile.login">
+    <router-link class="link" v-bind:to="`/${profile.login}`">
       <b-card
         v-bind:img-src="profile.avatar_url"
         v-bind:img-alt="profile.login"

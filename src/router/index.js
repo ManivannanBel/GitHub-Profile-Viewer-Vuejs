@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
+import Profile from "../views/Profile.vue";
 
 Vue.use(VueRouter);
 
@@ -12,7 +13,8 @@ const routes = [
   },
   {
     path: "/:loginid",
-    name: "Profile"
+    name: "Profile",
+    component: Profile
   }
 ];
 
