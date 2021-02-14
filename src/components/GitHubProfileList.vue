@@ -9,6 +9,7 @@
     >
       Load more...
     </h5>-->
+    <div class="trigger" ref="lazyloadTrigger"></div>
   </main>
 </template>
 
@@ -21,31 +22,30 @@ export default {
   props: ["usersList", "resultCount", "pageNo", "perPage"],
   components: { GitHubProfileListItem },
   computed: mapGetters(["apiLoading"]),
+  data() {
+    return {
+      observer: null
+    };
+  },
   mounted() {
-    //Register the scroll event
-    this.$nextTick(function() {
-      window.addEventListener("scroll", this.onScroll);
-    });
+    //Register the observer
+    this.observer = new IntersectionObserver(
+      entries => {
+        this.handleLazyLoadTrigger(entries[0]);
+      },
+      { threshold: [0.9] }
+    );
+
+    this.observer.observe(this.$refs.lazyloadTrigger);
   },
   beforeDestroy() {
-    //Destroy the scroll event
-    window.removeEventListener("scroll", this.onScroll);
+    //Destroy the observer
+    this.observer.disconnect();
   },
   methods: {
-    onScroll() {
-      // console.log(document.documentElement.scrollTop);
-      // console.log(window.innerHeight);
-      // console.log(document.documentElement.offsetHeight);
-      let loadData =
-        document.documentElement.scrollTop + window.innerHeight ===
-        document.documentElement.offsetHeight;
-
-      //Make api request only if all the below conditions are statisfied
-      //->we reach the list end
-      //->no pending response from api
-      //->number of users loaded is less than the total users list availble for that query
+    handleLazyLoadTrigger(entry) {
       if (
-        loadData &&
+        entry.isIntersecting &&
         !this.apiLoading &&
         this.pageNo - 1 > 0 &&
         (this.pageNo - 1) * this.perPage <= this.resultCount
@@ -80,5 +80,8 @@ h5 {
   .gridWrapper {
     display: block;
   }
+}
+.trigger {
+  height: 5px;
 }
 </style>
