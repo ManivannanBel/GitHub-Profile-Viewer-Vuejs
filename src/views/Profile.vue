@@ -1,6 +1,6 @@
 <template>
   <main>
-    <b-container class="container">
+    <b-container class="cntnr">
       <router-link class="back" to="/">
         <h4>Back</h4>
       </router-link>
@@ -72,12 +72,6 @@ export default {
 </script>
 
 <style scoped>
-@media screen {
-  .mainDetailWrapper {
-    grid-template-columns: 1fr 7fr;
-  }
-}
-
 .back {
   text-decoration: none;
   color: #7e7e7e;
@@ -85,7 +79,12 @@ export default {
 .warn {
   color: #e73737;
 }
-.container {
+.cntnr {
   margin-top: 15px;
+}
+@media screen and (max-width: 750px) {
+  .cntnr {
+    max-width: unset;
+  }
 }
 </style>

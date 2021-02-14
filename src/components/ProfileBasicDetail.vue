@@ -47,6 +47,11 @@ export default {
   -webkit-box-shadow: 0px 0px 2px 1px rgba(59, 59, 59, 0.59);
   -moz-box-shadow: 0px 0px 2px 1px rgba(59, 59, 59, 0.59);
 }
+@media screen {
+  .mainDetailWrapper {
+    grid-template-columns: 1fr 7fr;
+  }
+}
 .avatar {
   height: 100px;
   width: 100px;
