@@ -27,7 +27,7 @@ const mutations = {
 
 const actions = {
   getProfile({ commit }, loginId) {
-    commit("setApiLoading", true);
+    commit("setProfileApiLoading", true);
     axios
       .get(`https://api.github.com/users/${loginId}`)
       .then(response => {
