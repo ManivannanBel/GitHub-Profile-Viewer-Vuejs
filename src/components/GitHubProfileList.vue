@@ -33,9 +33,9 @@ export default {
   },
   methods: {
     onScroll() {
-      console.log(document.documentElement.scrollTop);
-      console.log(window.innerHeight);
-      console.log(document.documentElement.offsetHeight);
+      // console.log(document.documentElement.scrollTop);
+      // console.log(window.innerHeight);
+      // console.log(document.documentElement.offsetHeight);
       let loadData =
         document.documentElement.scrollTop + window.innerHeight ===
         document.documentElement.offsetHeight;
