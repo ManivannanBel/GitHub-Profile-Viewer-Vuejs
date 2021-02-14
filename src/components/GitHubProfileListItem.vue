@@ -10,7 +10,7 @@
         class="card"
       >
         <div>
-          <h4>{{ profile.login }}</h4>
+          <h4 class="uname">{{ profile.login }}</h4>
         </div>
         <div v-if="profileDetails[profile.login]" class="desc">
           <span>@{{profileDetails[profile.login].login}}</span>
@@ -64,5 +64,17 @@ export default {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+}
+
+@media screen and (max-width: 500px) {
+  .uname {
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .uname {
+    font-size: 18px;
+  }
 }
 </style>
