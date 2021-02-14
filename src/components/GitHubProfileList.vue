@@ -8,7 +8,7 @@
       v-on:click="$emit('load-more')"
     >
       Load more...
-    </h5> -->
+    </h5>-->
   </main>
 </template>
 
@@ -47,8 +47,8 @@ export default {
       if (
         loadData &&
         !this.apiLoading &&
-        pageNo - 1 > 0 &&
-        (pageNo - 1) * perPage <= resultCount
+        this.pageNo - 1 > 0 &&
+        (this.pageNo - 1) * this.perPage <= this.resultCount
       ) {
         this.$emit("load-more");
       }
@@ -71,9 +71,14 @@ h5 {
   grid-template-columns: 1fr 1fr;
   grid-gap: 5px;
 }
-@media screen and (max-width: 765px) {
+@media screen and (max-width: 990px) {
   .gridWrapper {
     grid-template-columns: 1fr;
+  }
+}
+@media screen and (max-width: 460px) {
+  .gridWrapper {
+    display: block;
   }
 }
 </style>

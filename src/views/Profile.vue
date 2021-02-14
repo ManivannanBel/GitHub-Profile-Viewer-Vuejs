@@ -1,7 +1,9 @@
 <template>
   <main>
     <b-container>
-      <router-link class="back" to="/"><h4>Back</h4></router-link>
+      <router-link class="back" to="/">
+        <h4>Back</h4>
+      </router-link>
       <div v-if="userDetails.login">
         <div class="mainDetailWrapper">
           <img class="avatar" v-bind:src="userDetails.avatar_url" />
@@ -13,6 +15,10 @@
         <section v-if="userDetails.bio">
           <h5>Bio</h5>
           <p>{{ userDetails.bio }}</p>
+        </section>
+        <section v-if="userDetails.company">
+          <h5>Works at</h5>
+          <p>{{ userDetails.company }}</p>
         </section>
         <div class="detailsWrappers">
           <div>
@@ -33,34 +39,36 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   name: "Profile",
   data() {
     return {
       currentRoute: window.location.hash.substring(2),
-      userDetails: {},
-      apiLoading: true
+      userDetails: {}
+      //apiLoading: true
     };
   },
+  methods: {
+    ...mapActions(["getProfile"])
+  },
+  computed: mapGetters(["profileDetails", "apiLoading"]),
   created() {
-    //Do request call for user data once the component is created
-    axios
-      .get(`https://api.github.com/users/${this.currentRoute}`, {
-        params: {
-          q: this.currentSearchQuery,
-          per_page: this.perPage,
-          page: this.pageNo
-        }
-      })
-      .then(response => {
-        this.userDetails = { ...response.data };
-        this.apiLoading = false;
-      })
-      .catch(err => {
-        console.log(err);
-        this.apiLoading = false;
-      });
+    //If profile detail is not present in the store, then request for data
+    if (!this.profileDetails[this.currentRoute]) {
+      this.apiLoading = true;
+      this.getProfile(this.currentRoute);
+    } else {
+      this.userDetails = this.profileDetails[this.currentRoute];
+    }
+  },
+  watch: {
+    //update the profile details
+    profileDetails() {
+      this.userDetails = this.profileDetails[this.currentRoute];
+    }
   }
 };
 </script>
